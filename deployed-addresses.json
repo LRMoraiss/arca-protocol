@@ -1,0 +1,10 @@
+{
+  "network": "sepolia",
+  "ARCAToken": "PREENCHER_APÓS_DEPLOY",
+  "ARCABadge": "PREENCHER_APÓS_DEPLOY",
+  "ARCAStaking": "PREENCHER_APÓS_DEPLOY",
+  "ARCAGovernance": "PREENCHER_APÓS_DEPLOY",
+  "chainlinkEthUsd": "0x694AA1769357215DE4FAC081bf1f309aDC325306",
+  "deployedAt": "PREENCHER_APÓS_DEPLOY",
+  "explorer": "https://sepolia.etherscan.io"
+}
