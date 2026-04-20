@@ -1,0 +1,57 @@
+graph TD
+    subgraph USUARIOS["👥 Atores"]
+        OSC["🏢 OSC\n(Organização Social)"]
+        FIN["💼 Financiador\n(Holder de ARC)"]
+        ADMIN["🔑 Admin\n(Owner / DAO)"]
+    end
+
+    subgraph CONTRATOS["⛓️ Contratos Inteligentes — Protocolo ARCA"]
+        TOKEN["ARCAToken\n(ERC-20)\n0x931Eb83..."]
+        BADGE["ARCABadge\n(ERC-721 Soulbound)\n0xf5C0863..."]
+        STAKING["ARCAStaking\n(Staking + Recompensas)\n0xc210A06..."]
+        GOV["ARCAGovernance\n(DAO)\n0x0D361Db..."]
+    end
+
+    subgraph EXTERNO["🌐 Serviços Externos"]
+        CHAINLINK["🔮 Chainlink Oracle\nETH/USD Feed\n0x694AA1..."]
+        ETHERSCAN["🔍 Sepolia Etherscan\n(Explorer)"]
+    end
+
+    %% Fluxos do Financiador
+    FIN -->|"1. Recebe tokens ARC"| TOKEN
+    FIN -->|"2. approve + stake(500 ARC)"| STAKING
+    FIN -->|"3. criarProposta + votar"| GOV
+
+    %% Fluxos da OSC
+    OSC -->|"Recebe Badge NFT"| BADGE
+
+    %% Fluxos do Admin
+    ADMIN -->|"mint(tokens)"| TOKEN
+    ADMIN -->|"mintBadge(osc, nivel)"| BADGE
+    ADMIN -->|"executarProposta"| GOV
+
+    %% Interações entre contratos
+    STAKING -->|"transferFrom (stake)"| TOKEN
+    STAKING -->|"transfer (unstake + recompensa)"| TOKEN
+    GOV -->|"balanceOf (peso do voto)"| TOKEN
+    GOV -->|"balanceOf (saldo mínimo proposta)"| TOKEN
+
+    %% Oracle
+    CHAINLINK -->|"latestRoundData()\npreço ETH/USD"| STAKING
+
+    %% Explorer
+    TOKEN -.->|"verificar"| ETHERSCAN
+    BADGE -.->|"verificar"| ETHERSCAN
+    STAKING -.->|"verificar"| ETHERSCAN
+    GOV -.->|"verificar"| ETHERSCAN
+
+    %% Estilos
+    style TOKEN fill:#4CAF50,color:#fff,stroke:#388E3C
+    style BADGE fill:#9C27B0,color:#fff,stroke:#7B1FA2
+    style STAKING fill:#FF9800,color:#fff,stroke:#F57C00
+    style GOV fill:#2196F3,color:#fff,stroke:#1565C0
+    style CHAINLINK fill:#375BD2,color:#fff,stroke:#1a3a9e
+    style ETHERSCAN fill:#21325b,color:#fff,stroke:#0d1f3c
+    style USUARIOS fill:#f5f5f5,stroke:#bdbdbd
+    style CONTRATOS fill:#e8f5e9,stroke:#a5d6a7
+    style EXTERNO fill:#e3f2fd,stroke:#90caf9
