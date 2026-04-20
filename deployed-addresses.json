@@ -1,10 +1,10 @@
 {
   "network": "sepolia",
-  "ARCAToken": "PREENCHER_APÓS_DEPLOY",
-  "ARCABadge": "PREENCHER_APÓS_DEPLOY",
-  "ARCAStaking": "PREENCHER_APÓS_DEPLOY",
-  "ARCAGovernance": "PREENCHER_APÓS_DEPLOY",
+  "ARCAToken": "0x931Eb83a7E400C37DFE664D52aD240494651fCD3",
+  "ARCABadge": "0xf5C0863fAA42FBa9B9052329d3Fac5eB30B8807a",
+  "ARCAStaking": "0xc210A0661081C0F65e51Cee13825631a2c742A0E",
+  "ARCAGovernance": "0x0D361Db7c0d1e2750f51d2E48B35b0Acb13C78A6",
   "chainlinkEthUsd": "0x694AA1769357215DE4FAC081bf1f309aDC325306",
-  "deployedAt": "PREENCHER_APÓS_DEPLOY",
+  "deployedAt": "2026-04-20T03:53:53.164Z",
   "explorer": "https://sepolia.etherscan.io"
 }

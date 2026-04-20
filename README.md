@@ -81,32 +81,33 @@ O Protocolo ARCA resolve esse problema criando uma infraestrutura de reputação
 ### Pré-requisitos
 
 ```bash
-npm install ethers dotenv
+npm install
 ```
 
 ### Variáveis de ambiente (.env)
 
 ```
 PRIVATE_KEY=sua_chave_privada_aqui
-SEPOLIA_RPC_URL=https://sepolia.infura.io/v3/seu_project_id
+SEPOLIA_RPC_URL=https://eth-sepolia.g.alchemy.com/v2/sua_chave_alchemy
 ```
 
 ### Executar deploy
 
 ```bash
-node deploy.js
+npx hardhat compile
+npx hardhat run scripts/deploy.js --network sepolia
 ```
 
 ### Endereços deployados (Sepolia)
 
-> Preencher após execução do deploy.js
+Deploy realizado em: `2026-04-20T03:53:53Z`
 
 | Contrato | Endereço | Explorer |
 |---|---|---|
-| ARCAToken | `0x...` | [Ver no Etherscan](https://sepolia.etherscan.io/address/0x...) |
-| ARCABadge | `0x...` | [Ver no Etherscan](https://sepolia.etherscan.io/address/0x...) |
-| ARCAStaking | `0x...` | [Ver no Etherscan](https://sepolia.etherscan.io/address/0x...) |
-| ARCAGovernance | `0x...` | [Ver no Etherscan](https://sepolia.etherscan.io/address/0x...) |
+| ARCAToken | `0x931Eb83a7E400C37DFE664D52aD240494651fCD3` | [Ver no Etherscan](https://sepolia.etherscan.io/address/0x931Eb83a7E400C37DFE664D52aD240494651fCD3) |
+| ARCABadge | `0xf5C0863fAA42FBa9B9052329d3Fac5eB30B8807a` | [Ver no Etherscan](https://sepolia.etherscan.io/address/0xf5C0863fAA42FBa9B9052329d3Fac5eB30B8807a) |
+| ARCAStaking | `0xc210A0661081C0F65e51Cee13825631a2c742A0E` | [Ver no Etherscan](https://sepolia.etherscan.io/address/0xc210A0661081C0F65e51Cee13825631a2c742A0E) |
+| ARCAGovernance | `0x0D361Db7c0d1e2750f51d2E48B35b0Acb13C78A6` | [Ver no Etherscan](https://sepolia.etherscan.io/address/0x0D361Db7c0d1e2750f51d2E48B35b0Acb13C78A6) |
 
 ---
 

@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 // descentralizada, eliminando a necessidade de confiar em uma única fonte.
 // Aqui usamos o feed ETH/USD da Sepolia para ajustar dinamicamente
 // a taxa de recompensa de staking conforme o preço de mercado.
-import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
 /**
  * ARCAStaking — Contrato de staking de tokens ARC com recompensa dinâmica.
