@@ -90,58 +90,6 @@ async function aguardar(tx, descricao) {
   return receipt;
 }
 
-// ── Etapas extraídas ───────────────────────────────────────────────────────
-async function etapaBadge(badge, wallet) {
-  titulo("ETAPA 1 — Mint de NFT Badge (ERC-721)");
-  console.log(`  Mintando Badge Nível 1 (Bronze) para: ${wallet}`);
-
-  const possuiBadge = await badge.possuiBadge(wallet);
-  if (possuiBadge) {
-    const tokenId = await badge.badgeDeOSC(wallet);
-    const nivel   = await badge.nivelBadge(tokenId);
-    console.log(`  ℹ️  Carteira já possui Badge NFT!`);
-    info("  Token ID:", tokenId.toString());
-    let nivelStr = "Ouro";
-    if (nivel === 1n) nivelStr = "Bronze";
-    else if (nivel === 2n) nivelStr = "Prata";
-    info("  Nível:", nivelStr);
-    console.log(`  🔗 ${EXPLORER}/token/${ADDR.ARCABadge}?a=${wallet}`);
-  } else {
-    const txMint = await badge.mintBadge(wallet, 1);
-    await aguardar(txMint, "Mintando Badge Bronze");
-    const tokenId = await badge.badgeDeOSC(wallet);
-    info("  Token ID mintado:", tokenId.toString());
-    console.log(`  🔗 NFT: ${EXPLORER}/token/${ADDR.ARCABadge}?a=${wallet}`);
-  }
-}
-
-async function etapaStaking(staking, token, wallet) {
-  titulo("ETAPA 2 — Stake de Tokens ARC (ARCAStaking + Chainlink)");
-
-  const stakeAtual = await staking.stakes(wallet);
-  if (stakeAtual.quantidade > 0n) {
-    console.log(`  ℹ️  Já possui stake ativo!`);
-    info("  Quantidade em stake:", ethers.formatEther(stakeAtual.quantidade) + " ARC");
-    const recompPend = await staking.recompensaPendente(wallet);
-    info("  Recompensa pendente:", ethers.formatEther(recompPend) + " ARC");
-    console.log(`  🔗 ${EXPLORER}/address/${ADDR.ARCAStaking}`);
-  } else {
-    const STAKE_AMOUNT = ethers.parseEther("100"); // 100 ARC
-
-    console.log(`  Aprovando ${ethers.formatEther(STAKE_AMOUNT)} ARC para o contrato de staking...`);
-    const txApprove = await token.approve(ADDR.ARCAStaking, STAKE_AMOUNT);
-    await aguardar(txApprove, "Aprovando allowance");
-
-    console.log(`  Fazendo stake de ${ethers.formatEther(STAKE_AMOUNT)} ARC...`);
-    const txStake = await staking.stake(STAKE_AMOUNT);
-    await aguardar(txStake, "Executando stake");
-
-    const stakeNovo = await staking.stakes(wallet);
-    info("  Quantidade em stake:", ethers.formatEther(stakeNovo.quantidade) + " ARC");
-    console.log(`  🔗 ${EXPLORER}/address/${ADDR.ARCAStaking}`);
-  }
-}
-
 // ── MAIN ───────────────────────────────────────────────────────────────────
 async function main() {
   // Conectar à Sepolia
@@ -183,10 +131,49 @@ async function main() {
   info("Total de propostas DAO:", totalProp.toString());
 
   // ── ETAPA 1: Mint de NFT Badge ───────────────────────────────────────────
-  await etapaBadge(badge, wallet);
+  titulo("ETAPA 1 — Mint de NFT Badge (ERC-721)");
+  console.log(`  Mintando Badge Nível 1 (Bronze) para: ${wallet}`);
+
+  if (possuiBadge) {
+    const tokenId = await badge.badgeDeOSC(wallet);
+    const nivel   = await badge.nivelBadge(tokenId);
+    console.log(`  ℹ️  Carteira já possui Badge NFT!`);
+    info("  Token ID:", tokenId.toString());
+    info("  Nível:", nivel === 1n ? "Bronze" : nivel === 2n ? "Prata" : "Ouro");
+    console.log(`  🔗 ${EXPLORER}/token/${ADDR.ARCABadge}?a=${wallet}`);
+  } else {
+    const txMint = await badge.mintBadge(wallet, 1);
+    const receiptMint = await aguardar(txMint, "Mintando Badge Bronze");
+    const tokenId = await badge.badgeDeOSC(wallet);
+    info("  Token ID mintado:", tokenId.toString());
+    console.log(`  🔗 NFT: ${EXPLORER}/token/${ADDR.ARCABadge}?a=${wallet}`);
+  }
 
   // ── ETAPA 2: Approve + Stake de tokens ──────────────────────────────────
-  await etapaStaking(staking, token, wallet);
+  titulo("ETAPA 2 — Stake de Tokens ARC (ARCAStaking + Chainlink)");
+
+  const stakeAtual = await staking.stakes(wallet);
+  if (stakeAtual.quantidade > 0n) {
+    console.log(`  ℹ️  Já possui stake ativo!`);
+    info("  Quantidade em stake:", ethers.formatEther(stakeAtual.quantidade) + " ARC");
+    const recompPend = await staking.recompensaPendente(wallet);
+    info("  Recompensa pendente:", ethers.formatEther(recompPend) + " ARC");
+    console.log(`  🔗 ${EXPLORER}/address/${ADDR.ARCAStaking}`);
+  } else {
+    const STAKE_AMOUNT = ethers.parseEther("100"); // 100 ARC
+
+    console.log(`  Aprovando ${ethers.formatEther(STAKE_AMOUNT)} ARC para o contrato de staking...`);
+    const txApprove = await token.approve(ADDR.ARCAStaking, STAKE_AMOUNT);
+    await aguardar(txApprove, "Aprovando allowance");
+
+    console.log(`  Fazendo stake de ${ethers.formatEther(STAKE_AMOUNT)} ARC...`);
+    const txStake = await staking.stake(STAKE_AMOUNT);
+    await aguardar(txStake, "Executando stake");
+
+    const stakeNovo = await staking.stakes(wallet);
+    info("  Quantidade em stake:", ethers.formatEther(stakeNovo.quantidade) + " ARC");
+    console.log(`  🔗 ${EXPLORER}/address/${ADDR.ARCAStaking}`);
+  }
 
   // ── ETAPA 3: Criar proposta na DAO ──────────────────────────────────────
   titulo("ETAPA 3 — Criar Proposta na DAO (ARCAGovernance)");
@@ -195,7 +182,7 @@ async function main() {
   console.log(`  Proposta: "${descricao}"`);
 
   const txProposta = await gov.criarProposta(descricao);
-  await aguardar(txProposta, "Criando proposta na DAO");
+  const receiptProposta = await aguardar(txProposta, "Criando proposta na DAO");
 
   const totalPropostasNovo = await gov.totalPropostas();
   const propostaId = totalPropostasNovo - 1n;
@@ -205,34 +192,20 @@ async function main() {
   // ── ETAPA 4: Votar na proposta ───────────────────────────────────────────
   titulo("ETAPA 4 — Votação na DAO");
 
-  try {
-    const jaVotou = await gov.votou(propostaId, wallet);
-    if (jaVotou) {
-      console.log(`  ℹ️  Já votou nesta proposta!`);
-    } else {
-      console.log(`  Votando SIM na proposta #${propostaId}...`);
-      const txVoto = await gov.votar(propostaId, true);
-      await aguardar(txVoto, "Registrando voto");
-    }
-
-    // Ler estado da proposta após voto
-    const proposta = await gov.propostas(propostaId);
-    info("  Votos SIM:", ethers.formatEther(proposta.votosSim) + " ARC");
-    info("  Votos NÃO:", ethers.formatEther(proposta.votosNao) + " ARC");
-    console.log(`  🔗 ${EXPLORER}/address/${ADDR.ARCAGovernance}`);
-  } catch (err) {
-    if (err.reason?.includes("encerrado")) {
-      console.log(`  ⚠️  Período de votação já encerrado para a proposta #${propostaId}.`);
-      console.log(`  ℹ️  O contrato ARCAGovernance define um prazo de votação.`);
-      console.log(`     A proposta foi criada com sucesso, mas o período expirou`);
-      console.log(`     antes da votação ser registrada.`);
-    } else if (err.reason) {
-      console.log(`  ⚠️  Não foi possível votar: ${err.reason}`);
-    } else {
-      console.log(`  ⚠️  Erro ao tentar votar: ${err.message}`);
-    }
-    console.log(`  🔗 ${EXPLORER}/address/${ADDR.ARCAGovernance}`);
+  const jaVotou = await gov.votou(propostaId, wallet);
+  if (jaVotou) {
+    console.log(`  ℹ️  Já votou nesta proposta!`);
+  } else {
+    console.log(`  Votando SIM na proposta #${propostaId}...`);
+    const txVoto = await gov.votar(propostaId, true);
+    await aguardar(txVoto, "Registrando voto");
   }
+
+  // Ler estado da proposta após voto
+  const proposta = await gov.propostas(propostaId);
+  info("  Votos SIM:", ethers.formatEther(proposta.votosSim) + " ARC");
+  info("  Votos NÃO:", ethers.formatEther(proposta.votosNao) + " ARC");
+  console.log(`  🔗 ${EXPLORER}/address/${ADDR.ARCAGovernance}`);
 
   // ── RESUMO FINAL ─────────────────────────────────────────────────────────
   titulo("RESUMO FINAL — Protocolo ARCA na Sepolia");
