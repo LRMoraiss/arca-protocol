@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARCA Protocol Explorer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  
+  <div class="crt-overlay"></div>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar glass-panel">
+      <div class="brand">
+        <h1>ARCA</h1>
+        <p class="subtitle">PROTOCOL SYS.v1.0</p>
+      </div>
+
+      <nav>
+        <ul>
+          <li class="nav-item active" data-tab="dashboard"><a>/// DASHBOARD</a></li>
+          <li class="nav-item" data-tab="contratos"><a>/// CONTRATOS</a></li>
+          <li class="nav-item" data-tab="relatorios"><a>/// DOCUMENTOS</a></li>
+        </ul>
+      </nav>
+
+      <div class="connection-status">
+        <p>STATUS DA REDE</p>
+        <div class="status-indicator">
+          <div class="led off" id="network-led"></div>
+          <span id="network-name">DESCONECTADO</span>
+        </div>
+        <button id="btn-connect" class="cyber-button">CONECTAR CARTEIRA</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content">
+      
+      <!-- Top Bar -->
+      <header class="topbar glass-panel">
+        <div class="wallet-info">
+          <span class="label">CARTEIRA CONECTADA:</span>
+          <span id="wallet-address" class="mono-text data-value">0x...</span>
+        </div>
+        <div class="badge-status" id="badge-status-container">
+          <span class="label">BADGE STATUS:</span>
+          <span id="badge-level" class="mono-text data-value text-red">NENHUM</span>
+        </div>
+      </header>
+
+      <!-- Dashboard Grid -->
+      <section id="dashboard" class="dashboard-grid tab-content active">
+        
+        <!-- Token Card -->
+        <div class="card glass-panel cyber-border">
+          <div class="card-header">
+            <h2>ARCAToken (ARC)</h2>
+            <span class="badge">ERC-20</span>
+          </div>
+          <div class="card-body">
+            <div class="data-row">
+              <span class="label">SEU SALDO</span>
+              <span id="arc-balance" class="value mono-text">0.00</span>
+            </div>
+            <div class="data-row">
+              <span class="label">TOTAL SUPPLY</span>
+              <span id="arc-supply" class="value mono-text">0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Staking Card -->
+        <div class="card glass-panel cyber-border">
+          <div class="card-header">
+            <h2>ARCA Staking</h2>
+            <span class="badge">DEFI</span>
+          </div>
+          <div class="card-body">
+            <div class="data-row">
+              <span class="label">SEU STAKE</span>
+              <span id="user-stake" class="value mono-text">0.00 ARC</span>
+            </div>
+            <div class="data-row">
+              <span class="label">TOTAL NO PROTOCOLO</span>
+              <span id="total-staked" class="value mono-text">0.00 ARC</span>
+            </div>
+            <div class="data-row">
+              <span class="label">PREÇO ETH/USD (Oracle)</span>
+              <span id="eth-price" class="value mono-text">$0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Governance Card -->
+        <div class="card glass-panel cyber-border">
+          <div class="card-header">
+            <h2>ARCA Governance</h2>
+            <span class="badge">DAO</span>
+          </div>
+          <div class="card-body">
+            <div class="data-row">
+              <span class="label">TOTAL DE PROPOSTAS</span>
+              <span id="total-proposals" class="value mono-text">0</span>
+            </div>
+            <div class="data-row">
+              <span class="label">ÚLTIMA PROPOSTA ID</span>
+              <span id="last-proposal-id" class="value mono-text">-</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Resumo Financeiro Card -->
+        <div class="card glass-panel cyber-border">
+          <div class="card-header">
+            <h2>Resumo da Conta</h2>
+            <span class="badge">ETH</span>
+          </div>
+          <div class="card-body">
+            <div class="data-row">
+              <span class="label">SALDO ETH (SEPOLIA)</span>
+              <span id="eth-balance" class="value mono-text text-green">0.00</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Contratos Section -->
+      <section id="contratos" class="reports-section glass-panel cyber-border tab-content">
+        <h2>/// ENDEREÇOS DOS CONTRATOS NA SEPOLIA</h2>
+        <p class="description">Verifique a transparência acessando os contratos oficiais direto no Etherscan.</p>
+        
+        <div class="reports-grid">
+          <a href="https://sepolia.etherscan.io/address/0x931Eb83a7E400C37DFE664D52aD240494651fCD3" target="_blank" class="report-item">
+            <span class="icon">🪙</span>
+            <div>
+              <span class="name">ARCAToken</span>
+              <span class="label" style="margin-bottom: 0;">0x931...fCD3</span>
+            </div>
+          </a>
+          <a href="https://sepolia.etherscan.io/address/0xc210A0661081C0F65e51Cee13825631a2c742A0E" target="_blank" class="report-item">
+            <span class="icon">🏦</span>
+            <div>
+              <span class="name">ARCAStaking</span>
+              <span class="label" style="margin-bottom: 0;">0xc21...2A0E</span>
+            </div>
+          </a>
+          <a href="https://sepolia.etherscan.io/address/0x0D361Db7c0d1e2750f51d2E48B35b0Acb13C78A6" target="_blank" class="report-item">
+            <span class="icon">🏛️</span>
+            <div>
+              <span class="name">ARCAGovernance</span>
+              <span class="label" style="margin-bottom: 0;">0x0D3...78A6</span>
+            </div>
+          </a>
+          <a href="https://sepolia.etherscan.io/address/0xf5C0863fAA42FBa9B9052329d3Fac5eB30B8807a" target="_blank" class="report-item">
+            <span class="icon">🏅</span>
+            <div>
+              <span class="name">ARCABadge</span>
+              <span class="label" style="margin-bottom: 0;">0xf5C...807a</span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- Relatórios Section -->
+      <section id="relatorios" class="reports-section glass-panel cyber-border tab-content">
+        <h2>/// ACERVO DE ARQUIVOS E RELATÓRIOS</h2>
+        <p class="description">Documentos oficiais e evidências de auditoria do protocolo.</p>
+        
+        <div class="reports-grid">
+          <a href="../documentos%20e%20relatorios/Relat%C3%B3rio_de_Seguran%C3%A7a_dos_Contratos_Inteligentes_Protocolo_ARCA.pdf" target="_blank" class="report-item">
+            <span class="icon">📄</span>
+            <span class="name">Relatório de Segurança</span>
+          </a>
+          <a href="../documentos%20e%20relatorios/Relatorio_Auditoria_Slither.pdf" target="_blank" class="report-item">
+            <span class="icon">🛡️</span>
+            <span class="name">Auditoria Slither</span>
+          </a>
+          <a href="../documentos%20e%20relatorios/Simula%C3%A7%C3%A3o_do_Protocolo_ARCA_%E2%80%94_Sepolia_Testnet.pdf" target="_blank" class="report-item">
+            <span class="icon">📊</span>
+            <span class="name">Simulação Sepolia Testnet</span>
+          </a>
+          <a href="../documentos%20e%20relatorios/U1C5O1T1_LucianoMorais.pdf" target="_blank" class="report-item">
+            <span class="icon">📑</span>
+            <span class="name">Documentação Técnica</span>
+          </a>
+          <a href="../documentos%20e%20relatorios/demo_apresentacao.js" target="_blank" class="report-item">
+            <span class="icon">💻</span>
+            <span class="name">Script Demo Completo</span>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Import ethers.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+  <!-- Main Script -->
+  <script src="app.js"></script>
+</body>
+</html>

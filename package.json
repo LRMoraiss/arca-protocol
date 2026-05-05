@@ -5,6 +5,7 @@
   "author": "Luciano Rodrigues de Morais",
   "license": "MIT",
   "scripts": {
+    "start": "npx http-server frontend -o",
     "deploy": "node scripts/deploy.js",
     "interact": "node scripts/interact.js"
   },
