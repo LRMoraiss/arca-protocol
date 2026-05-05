@@ -117,6 +117,7 @@ nav ul {
 
 nav li {
   margin-bottom: 15px;
+  cursor: pointer;
 }
 
 nav a {
@@ -136,9 +137,7 @@ nav li.active a, nav li:hover a {
   background: var(--dark-green);
 }
 
-nav li {
-  cursor: pointer;
-}
+
 
 /* Tab System */
 .tab-content {

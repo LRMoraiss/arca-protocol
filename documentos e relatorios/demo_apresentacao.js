@@ -139,11 +139,14 @@ async function main() {
     const nivel   = await badge.nivelBadge(tokenId);
     console.log(`  ℹ️  Carteira já possui Badge NFT!`);
     info("  Token ID:", tokenId.toString());
-    info("  Nível:", nivel === 1n ? "Bronze" : nivel === 2n ? "Prata" : "Ouro");
+    let nivelNome = "Ouro";
+    if (nivel === 1n) nivelNome = "Bronze";
+    else if (nivel === 2n) nivelNome = "Prata";
+    info("  Nível:", nivelNome);
     console.log(`  🔗 ${EXPLORER}/token/${ADDR.ARCABadge}?a=${wallet}`);
   } else {
     const txMint = await badge.mintBadge(wallet, 1);
-    const receiptMint = await aguardar(txMint, "Mintando Badge Bronze");
+    await aguardar(txMint, "Mintando Badge Bronze");
     const tokenId = await badge.badgeDeOSC(wallet);
     info("  Token ID mintado:", tokenId.toString());
     console.log(`  🔗 NFT: ${EXPLORER}/token/${ADDR.ARCABadge}?a=${wallet}`);
@@ -182,7 +185,7 @@ async function main() {
   console.log(`  Proposta: "${descricao}"`);
 
   const txProposta = await gov.criarProposta(descricao);
-  const receiptProposta = await aguardar(txProposta, "Criando proposta na DAO");
+  await aguardar(txProposta, "Criando proposta na DAO");
 
   const totalPropostasNovo = await gov.totalPropostas();
   const propostaId = totalPropostasNovo - 1n;

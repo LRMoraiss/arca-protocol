@@ -79,7 +79,7 @@ async function main() {
   console.log("ARCAGovernance:", arcaGovAddr);
   console.log("\nVerifique em: https://sepolia.etherscan.io");
 
-  const fs = require("fs");
+  const fs = require("node:fs");
   const enderecos = {
     network: "sepolia",
     ARCAToken: arcaTokenAddr,
