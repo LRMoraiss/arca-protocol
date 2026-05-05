@@ -2,7 +2,7 @@
 **Residência em TIC 29 – Web 3.0 | Unidade 1, Capítulo 5**
 **Autor:** Luciano Rodrigues de Morais
 
-🌍 **Deploy em Produção (Vercel):** [https://arca-mvp.vercel.app](https://arca-mvp.vercel.app)
+🌍 **Deploy em Produção (Vercel):** [https://arca-mvp.vercel.app](https://arca-protocol.vercel.app/)
 
 ---
 
